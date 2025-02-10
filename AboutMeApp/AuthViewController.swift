@@ -46,6 +46,11 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
+    @IBAction func unwindToAuthViewController(_ segue: UIStoryboardSegue) {
+        userNameTF.text = ""
+        passwordTF.text = ""
+    }
+    
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }

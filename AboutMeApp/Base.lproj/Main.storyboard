@@ -136,7 +136,7 @@
                                     <color key="baseForegroundColor" systemColor="secondaryLabelColor"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="logOutActionButton" destination="b02-T9-NDb" eventType="touchUpInside" id="bVf-xb-Xq2"/>
+                                    <segue destination="HN5-Vb-cb5" kind="unwind" unwindAction="unwindToAuthViewController:" id="XNM-Oh-cgr"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -155,6 +155,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LaF-LT-v5s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="HN5-Vb-cb5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="870.99236641221376" y="3.5211267605633805"/>
         </scene>
