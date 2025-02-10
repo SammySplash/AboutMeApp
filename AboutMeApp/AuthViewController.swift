@@ -22,6 +22,8 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         
         setupUI()
         setupGestureRecognizers()
+        
+        passwordTF.isSecureTextEntry = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -60,22 +62,22 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Private Methods
     private func setupUI() {
-            logInOutlet.layer.cornerRadius = 5
-            
-            userNameTF.delegate = self
-            passwordTF.delegate = self
-            
-            userNameTF.returnKeyType = .next
-            passwordTF.returnKeyType = .done
-        }
+        logInOutlet.layer.cornerRadius = 5
+        
+        userNameTF.delegate = self
+        passwordTF.delegate = self
+        
+        userNameTF.returnKeyType = .next
+        passwordTF.returnKeyType = .done
+    }
     
     private func setupGestureRecognizers() {
-            let tapGesture = UITapGestureRecognizer(
-                target: self,
-                action: #selector(dismissKeyboard)
-            )
-            view.addGestureRecognizer(tapGesture)
-        }
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
+        view.addGestureRecognizer(tapGesture)
+    }
     
     private func login() {
         guard let username = userNameTF.text, !username.isEmpty,
@@ -85,20 +87,27 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         }
         
         guard username == validUsername && password == validPassword else {
-            showAlert(message: "Invalid login or password", with: "Error")
+            showAlert(message: "Invalid login or password", with: "Error") {
+                self.passwordTF.text = ""
+            }
             return
         }
         
         performSegue(withIdentifier: "goToNextScreen", sender: self)
     }
     
-    private func showAlert(message: String, with title: String) {
+    private func showAlert(message: String, with title: String, completion: @escaping () -> Void = {}) {
         let alert = UIAlertController(
             title: title,
             message: message,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            completion()
+        }
+        
+        alert.addAction(okAction)
         present(alert, animated: true)
     }
 }
