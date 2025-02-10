@@ -35,6 +35,11 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         login()
     }
     
+    @IBAction func unwindToAuthViewController(_ segue: UIStoryboardSegue) {
+        userNameTF.text = ""
+        passwordTF.text = ""
+    }
+    
     @IBAction private func forgotUserNameAction() {
         showAlert(message: "Your name is «1»", with: "Oops!")
     }
@@ -44,11 +49,6 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
             message: "Please, enter correct login and password",
             with: "Invalid login or password"
         )
-    }
-    
-    @IBAction func unwindToAuthViewController(_ segue: UIStoryboardSegue) {
-        userNameTF.text = ""
-        passwordTF.text = ""
     }
     
     @objc func dismissKeyboard() {
