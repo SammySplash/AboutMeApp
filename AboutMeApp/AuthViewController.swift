@@ -34,9 +34,14 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction private func forgotUserNameAction() {
+        showAlert(message: "Your name is «1»", with: "Oops!")
     }
     
     @IBAction private func forgotPasswordAction() {
+        showAlert(
+            message: "Please, enter correct login and password",
+            with: "Invalid login or password"
+        )
     }
     
     @objc func dismissKeyboard() {
@@ -54,7 +59,6 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Private Methods
-    
     private func setupUI() {
             logInOutlet.layer.cornerRadius = 5
             
@@ -76,21 +80,21 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     private func login() {
         guard let username = userNameTF.text, !username.isEmpty,
               let password = passwordTF.text, !password.isEmpty else {
-            showAlert(message: "Enter correct data")
+            showAlert(message: "Enter correct data", with: "Error")
             return
         }
         
         guard username == validUsername && password == validPassword else {
-            showAlert(message: "Invalid login or password")
+            showAlert(message: "Invalid login or password", with: "Error")
             return
         }
         
         performSegue(withIdentifier: "goToNextScreen", sender: self)
     }
     
-    private func showAlert(message: String) {
+    private func showAlert(message: String, with title: String) {
         let alert = UIAlertController(
-            title: "Error",
+            title: title,
             message: message,
             preferredStyle: .alert
         )
