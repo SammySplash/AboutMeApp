@@ -7,11 +7,15 @@
 
 import UIKit
 
-class GreetingViewController: UIViewController {
+final class GreetingViewController: UIViewController {
+    var userName: String?
 
+    @IBOutlet var userNameOutlet: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setGradientBackground()
+        userNameOutlet.text = userName
     }
     
     override func viewDidLayoutSubviews() {
@@ -19,7 +23,11 @@ class GreetingViewController: UIViewController {
         view.layer.sublayers?.first?.frame = view.bounds
     }
     
-    func setGradientBackground() {
+    @IBAction private func logOutActionButton() {
+        dismiss(animated: true)
+    }
+    
+    private func setGradientBackground() {
         let gradientLayer = CAGradientLayer()
         
         gradientLayer.frame = view.bounds
