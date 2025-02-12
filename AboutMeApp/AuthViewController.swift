@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  AuthViewController.swift
 //  AboutMeApp
 //
 //  Created by Samoilik Hleb on 09/02/2025.
@@ -12,18 +12,17 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet private var userNameTF: UITextField!
     @IBOutlet private var passwordTF: UITextField!
     
-    @IBOutlet var logInOutlet: UIButton!
-    
     private let validUsername = "1"
     private let validPassword = "1"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupUI()
-        setupGestureRecognizers()
-        
-        passwordTF.isSecureTextEntry = true
+        configureKeyboard()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -31,11 +30,11 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         greetingVC?.userName = userNameTF.text
     }
     
-    @IBAction func loginButtonTapped() {
+    @IBAction private func loginButtonTapped() {
         login()
     }
     
-    @IBAction func unwindToAuthViewController(_ segue: UIStoryboardSegue) {
+    @IBAction private func unwindToAuthViewController(_ segue: UIStoryboardSegue) {
         userNameTF.text = ""
         passwordTF.text = ""
     }
@@ -51,10 +50,6 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == userNameTF {
             passwordTF.becomeFirstResponder()
@@ -66,9 +61,7 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Private Methods
-    private func setupUI() {
-        logInOutlet.layer.cornerRadius = 5
-        
+    private func configureKeyboard() {
         userNameTF.delegate = self
         passwordTF.delegate = self
         
@@ -76,42 +69,25 @@ final class AuthViewController: UIViewController, UITextFieldDelegate {
         passwordTF.returnKeyType = .done
     }
     
-    private func setupGestureRecognizers() {
-        let tapGesture = UITapGestureRecognizer(
-            target: self,
-            action: #selector(dismissKeyboard)
-        )
-        view.addGestureRecognizer(tapGesture)
-    }
-    
     private func login() {
-        guard let username = userNameTF.text, !username.isEmpty,
-              let password = passwordTF.text, !password.isEmpty else {
-            showAlert(message: "Enter correct data", with: "Error")
-            return
-        }
-        
-        guard username == validUsername && password == validPassword else {
+        guard userNameTF.text == validUsername && passwordTF.text == validPassword else {
             showAlert(message: "Invalid login or password", with: "Error") {
                 self.passwordTF.text = ""
             }
             return
         }
-        
-        performSegue(withIdentifier: "goToNextScreen", sender: self)
+        performSegue(withIdentifier: "welcomeScreen", sender: self)
     }
     
-    private func showAlert(message: String, with title: String, completion: @escaping () -> Void = {}) {
+    private func showAlert(message: String, with title: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(
             title: title,
             message: message,
             preferredStyle: .alert
         )
-        
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-            completion()
+            completion?()
         }
-        
         alert.addAction(okAction)
         present(alert, animated: true)
     }
