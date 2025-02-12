@@ -8,7 +8,7 @@
 import UIKit
 
 final class GreetingViewController: UIViewController {
-
+    
     @IBOutlet private var userNameOutlet: UILabel!
     
     var userName: String?
@@ -16,6 +16,7 @@ final class GreetingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setGradientBackground()
+        userNameOutlet.text = "Welcome, \(userName ?? "")!"
     }
     
     override func viewDidLayoutSubviews() {
